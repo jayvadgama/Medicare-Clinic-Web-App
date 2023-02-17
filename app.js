@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
+var hbs = require('hbs');
 
 const app = express();
 
@@ -10,10 +11,13 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+app.set('views', 'views');
+app.set('view engine', 'hbs');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
+  res.render('index');
 });
 
 app.post('/login', (req, res) => {
@@ -47,19 +51,53 @@ app.get('/dashboard', (req, res) => {
   const user = users.find(u => u.id === req.session.userId);
 
   // Serve the dashboard HTML page and replace [username] with the actual username
-  const dashboardPage = fs.readFileSync(__dirname + '/public/dashboard.html', 'utf8');
-  const renderedPage = dashboardPage.replace('[username]', user.username);
-  res.send(renderedPage);
+  res.render('dashboard', {username: user.username});
+
+  // const dashboardPage = fs.readFileSync(__dirname + '/public/dashboard.html', 'utf8');
+  // const renderedPage = dashboardPage.replace('[username]', user.username);
+  // res.send(renderedPage);
+});
+
+
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
+
+// Register endpoint
+app.post('/register', (req, res) => {
+  const { username, password } = req.body;
+
+  let users = [];
+  if (fs.existsSync('users.json')) {
+    users = JSON.parse(fs.readFileSync('users.json', 'utf8'));
+  }
+
+  // Check if username is already taken
+  if (users.find(user => user.username === username)) {
+    return res.status(400).send('Username is already taken');
+  }
+
+
+    const user = {
+      id: users.length + 1,
+      username: username,
+      password: password
+    };
+
+    
+    users.push(user);
+    fs.writeFileSync('users.json', JSON.stringify(users));
+    res.send('User registered successfully');
+ 
+
 });
 
 app.get('/logout', (req, res) => {
   // Destroy the session and redirect to the login page
-  req.session.destroy(err => {
-    if (err) {
-      console.log(err);
-    }
-    res.redirect('/');
-  });
+  req.session.destroy();
+  res.redirect('/login');
+  
 });
 
 app.listen(3000, () => {
