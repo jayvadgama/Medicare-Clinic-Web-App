@@ -64,6 +64,11 @@ app.get('/login', (req, res) => {
   res.render('login');
 });
 
+app.get('/register', (req, res) => {
+  res.render('register');
+});
+
+
 // Register endpoint
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
@@ -75,7 +80,7 @@ app.post('/register', (req, res) => {
 
   // Check if username is already taken
   if (users.find(user => user.username === username)) {
-    return res.status(400).send('Username is already taken');
+    return res.status(400).json({ error: 'Username is taken!' });
   }
 
 
@@ -85,7 +90,7 @@ app.post('/register', (req, res) => {
       password: password
     };
 
-    
+
     users.push(user);
     fs.writeFileSync('users.json', JSON.stringify(users));
     res.send('User registered successfully');

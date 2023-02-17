@@ -10,26 +10,62 @@
 <body>
 
     <nav>
-        <div class="logo"><img src="images/medilogo.jpg" alt=""></div>
+
+        <div class="navbar">
+
+            <div class="logo"><img src="images/medilogo.jpg" alt="" width="138px" height="50px"></div>
+
+
+        </div>
     </nav>
-    
+
     <div class="form-container">
 
-        <form action="" method="post">
-           <h3>register now</h3>
+      <form action="/register" method="post">
+            <h3>Register Today</h3>
 
-           <input type="text" name="name" required placeholder="enter your name">
-           <input type="email" name="email" required placeholder="enter your email">
-           <input type="password" name="password" required placeholder="enter your password">
-           <input type="password" name="cpassword" required placeholder="confirm your password">
-          <select name="user_type">
-                <option value="user">user</option>
-                <option value="admin">admin</option>
-      </select>
-      <input type="submit" name="submit" value="register now" class="form-btn">
-      <p>already have an account? <a href="login.html">login now</a></p>
+            <input type="text" name="username" required placeholder="enter your username">
+            <input type="password" name="password" required placeholder="enter your password">
+            <input type="submit" name="submit" value="register now" class="form-btn">
 
-        </form>
+      <p>Have an account? <a href="/login">Login</a></p>
+        
+   </form>
+
+            </form>
     </div>
+
+
+    <script>
+
+// Handle form submission
+const form = document.querySelector('form');
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const username = form.elements.username.value;
+  const password = form.elements.password.value;
+
+  // Send request to server to register user
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+  });
+
+  if (response.ok) {
+    // Registration successful, redirect to login page
+    window.location.href = '/login';
+  } else {
+    // Registration failed, display error message
+    const data = await response.json();
+    alert(data.error);
+  }
+});
+
+    </script>
+    
 </body>
 </html>
