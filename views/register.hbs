@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Form</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav>
+
+        <div class="navbar">
+
+            <div class="logo"><img src="images/medilogo.jpg" alt="" width="138px" height="50px"></div>
+
+
+        </div>
+    </nav>
+
+    <div class="form-container">
+
+      <form action="/register" method="post">
+            <h3>Register Today</h3>
+
+            <input type="text" name="username" required placeholder="enter your username">
+            <input type="password" name="password" required placeholder="enter your password">
+            <input type="submit" name="submit" value="register now" class="form-btn">
+
+      <p>Have an account? <a href="/login">Login</a></p>
+        
+   </form>
+
+            </form>
+    </div>
+
+
+    <script>
+
+// Handle form submission
+const form = document.querySelector('form');
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const username = form.elements.username.value;
+  const password = form.elements.password.value;
+
+  // Send request to server to register user
+  const response = await fetch('/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
+  });
+
+  if (response.ok) {
+    // Registration successful, redirect to login page
+    window.location.href = '/login';
+  } else {
+    // Registration failed, display error message
+    const data = await response.json();
+    alert(data.error);
+  }
+});
+
+    </script>
+    
+</body>
+</html>
