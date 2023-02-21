@@ -71,7 +71,7 @@ app.get('/register', (req, res) => {
 
 // Register endpoint
 app.post('/register', (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, user_type } = req.body;
 
   let users = [];
   if (fs.existsSync('users.json')) {
@@ -87,7 +87,8 @@ app.post('/register', (req, res) => {
     const user = {
       id: users.length + 1,
       username: username,
-      password: password
+      password: password,
+      user_type: user_type
     };
 
 
