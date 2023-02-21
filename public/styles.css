@@ -156,3 +156,26 @@
 .content {
    display: none;
 }
+
+#quote {
+/* “ */
+
+
+position: absolute;
+width: 156px;
+height: 294px;
+left: 138px;
+top: 128px;
+
+font-family: 'Arial';
+font-style: normal;
+font-weight: 700;
+font-size: 250px;
+line-height: 169%;
+/* or 423px */
+
+display: flex;
+align-items: center;
+
+color: green;
+}
