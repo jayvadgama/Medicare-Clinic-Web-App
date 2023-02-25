@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "hbs": "^4.2.0"
+    "hbs": "^4.2.0",
+    "mdbootstrap": "^4.20.0"
   }
 }

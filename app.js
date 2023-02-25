@@ -24,7 +24,7 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // Load user data from JSON file
-  const users = JSON.parse(fs.readFileSync('users.json'));
+  const users = JSON.parse(fs.readFileSync('./Data/users.json'));
 
   // Check if user exists and password is correct
   const user = users.find(u => u.username === username && u.password === password);
@@ -45,13 +45,14 @@ app.get('/dashboard', (req, res) => {
   }
 
   // Load user data from JSON file
-  const users = JSON.parse(fs.readFileSync('users.json'));
+  const users = JSON.parse(fs.readFileSync('./Data/users.json'));
+  const patients = JSON.parse(fs.readFileSync('./Data/users.json'));
 
   // Find user by ID
   const user = users.find(u => u.id === req.session.userId);
 
   // Serve the dashboard HTML page and replace [username] with the actual username
-  res.render('dashboard', {username: user.username});
+  res.render('dashboard', {username: user.username,patients:patients});
 
   // const dashboardPage = fs.readFileSync(__dirname + '/public/dashboard.html', 'utf8');
   // const renderedPage = dashboardPage.replace('[username]', user.username);
@@ -74,14 +75,14 @@ app.post('/register', (req, res) => {
   const { username, password, user_type } = req.body;
 
   let users = [];
-  if (fs.existsSync('users.json')) {
-    users = JSON.parse(fs.readFileSync('users.json', 'utf8'));
+  if (fs.existsSync('./Data/users.json')) {
+    users = JSON.parse(fs.readFileSync('./Data/users.json', 'utf8'));
   }
 
   // Check if username is already taken
   if (users.find(user => user.username === username)) {
     return res.status(400).json({ error: 'Username is taken!' });
-  }
+  }else{
 
 
     const user = {
@@ -93,9 +94,10 @@ app.post('/register', (req, res) => {
 
 
     users.push(user);
-    fs.writeFileSync('users.json', JSON.stringify(users));
-    res.send('User registered successfully');
- 
+    fs.writeFileSync('./Data/users.json', JSON.stringify(users));
+    res.send("Hooray")
+    
+  }
 
 });
 

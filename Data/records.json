@@ -1,0 +1,7 @@
+[{
+    "id":1,
+    "patientid":1,
+    "condition":"Acidity",
+    "description":"Pain in the stomach",
+    "prescription":["Nexium, Panadol"]
+}]
